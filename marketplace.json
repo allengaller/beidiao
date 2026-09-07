@@ -1,0 +1,19 @@
+{
+  "name": "allengaller-beidiao",
+  "owner": {
+    "name": "Allen Galler"
+  },
+  "plugins": [
+    {
+      "name": "beidiao",
+      "source": "./",
+      "category": "productivity",
+      "tags": [
+        "skill",
+        "career",
+        "background-check",
+        "offer-evaluation"
+      ]
+    }
+  ]
+}

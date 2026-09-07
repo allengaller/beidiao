@@ -1,0 +1,23 @@
+{
+  "name": "beidiao",
+  "displayName": "背调 beidiao — 求职反向背调与职业研究",
+  "version": "0.1.0",
+  "description": "Pre-offer reverse background checks and career research from public sources: company risk (registry, litigation, layoffs, funding), employee reviews and salary, interviewer public footprint, hiring authenticity, and industry/career research with risk-graded reports.",
+  "descriptionZh": "求职反向背调与职业发展研究：查公司（工商/司法风险/裁员/融资）、看员工口碑与薪酬、查面试官与团队公开足迹、识别招聘真实性、行业与职业发展研究、offer 决策评估。",
+  "author": {
+    "name": "Allen Galler"
+  },
+  "repository": "https://github.com/allengaller/beidiao",
+  "license": "MIT",
+  "logo": "./assets/avatar.svg",
+  "keywords": [
+    "qoder-plugin",
+    "skill",
+    "beidiao",
+    "career",
+    "job-hunting",
+    "background-check",
+    "due-diligence"
+  ],
+  "skills": "./skills/"
+}
