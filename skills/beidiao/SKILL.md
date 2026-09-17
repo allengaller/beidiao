@@ -31,14 +31,14 @@ argument-hint: [公司名 / 面试官姓名+公司 / 行业或职位]
   - `firecrawl_crawl`：抓官网 about/jobs 少量多页（`limit` 控制在 5-10）。
   - `firecrawl_agent`：模块 D 行业综合研究这类多源任务；返回 jobId 后用 `firecrawl_agent_status` 轮询。
   - `firecrawl_monitor`：用户要长期盯公司动态时建监控（`page` 设为公司新闻搜索 URL，`goal` 写清判定什么变化有意义）。
-- **回退**：firecrawl 限流或未授权时用 WebSearch / WebFetch；JS 重且必须实时看的页面用 chrome-devtools 浏览器工具。
+- **回退**：firecrawl 返回 402/403 一次即判定额度或授权不可用，本次会话全量回退 WebSearch / WebFetch，不要反复重试；JS 重且必须实时看的页面用 chrome-devtools 浏览器工具，但知乎等强风控站连浏览器也会拦截（见 data-sources「已知盲区」），直接按盲区处理。
 - **CLI**：`curl` + `jq` 直接打公开 API；`gh api` 查公司 GitHub 组织活跃度（模块 C）。
 - 也可直接调用 `firecrawl-search` / `firecrawl-scrape` / `firecrawl-crawl` / `firecrawl-agent` 等技能获取详细用法。
 - **查询预算**：firecrawl 无认证时有额度限制。标准档全流程 ≤12 组查询；逼近上限时优先司法风险与裁员新闻，剩余维度降级 WebSearch 补，不硬撑 firecrawl。
 
 ## 执行流程
 
-1. **锁定实体**：先确认公司全称与法人主体（同集团多主体时区分"小米集团/小米科技/小米通讯"），再确认英文名/品牌名——levels.fyi、Glassdoor、Blind、GitHub 都用英文检索。同名歧义直接问用户一句，不要猜。
+1. **锁定实体**：先确认公司全称与法人主体（同集团多主体时区分"小米集团/小米科技/小米通讯"），再确认英文名/品牌名——levels.fyi、Glassdoor、Blind、GitHub 都用英文检索。同名歧义直接问用户一句，不要猜。检索中途冒出的同名/多地关联主体（如沪/京/深各有一家"XX科技"）同理：记录全部实体，用官网 ICP 备案号反查注册地、法人/股东交叉比对来验证集团关系；验证不了就列入核验清单并注明"同名公司的可能性存在"，不要猜成同集团。
 2. **并行搜集**：各模块的查询模板在 `references/data-sources.md`，按模块并行发起 firecrawl_search（一次 3-5 组查询，公司名 + 风险词组合）。
 3. **交叉验证**：关键结论 ≥2 个独立来源才算实锤；单源结论标注"⚠️ 单源待核实"。宁可标注存疑，不可写死。所有事实（数字、日期、金额、轮次）只能来自本次检索结果，禁止用模型记忆补齐。
 4. **时效过滤**：优先近 12-24 个月；每条关键信息标日期。三年前的裁员新闻和上个月的不是一回事。
